@@ -1,0 +1,60 @@
+# =========================================================
+# Git ignore rules for B&K C Programming Language Learning
+# Exclude build outputs and private tooling directories
+# =========================================================
+
+# Build outputs
+/build/
+/bin/
+/obj/
+/out/
+/dist/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.make
+
+# C/C++ compiler artifacts
+*.exe
+*.exe.stackdump
+*.o
+*.obj
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+*.lib
+*.pdb
+*.ilk
+*.map
+
+# Coverage/debug files
+*.gcda
+*.gcno
+*.gcov
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS/editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.vs/
+*.code-workspace
+
+# Private / tooling dirs (not part of project deliverables)
+.claude/
+.specify/
+package/
+
+# Documents (avoid committing large PDFs)
+docs/*.pdf
+docs/**/*.pdf

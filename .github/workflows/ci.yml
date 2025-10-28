@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build C exercises (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang
+
+      - name: Compile all C exercises
+        env:
+          CC: ${{ matrix.compiler }}
+        run: |
+          set -euxo pipefail
+          mkdir -p build
+
+          # Collect all .c files under chapters/**/exercises
+          mapfile -t files < <(find chapters -type f -path "*/exercises/*" -name "*.c" | sort || true)
+
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No C source files found under chapters/**/exercises" >&2
+            exit 1
+          fi
+
+          for f in "${files[@]}"; do
+            base="$(basename "${f}")"
+            out="build/${base%.c}"
+            echo "[${CC}] Compiling ${f} -> ${out}"
+            "${CC}" -std=c11 -Wall -Wextra "${f}" -o "${out}"
+          done
+
+      - name: List build outputs
+        run: ls -alh build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: c-exercises-${{ matrix.compiler }}
+          path: build/
