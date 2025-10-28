@@ -58,3 +58,6 @@ package/
 # Documents (avoid committing large PDFs)
 docs/*.pdf
 docs/**/*.pdf
+
+# Generated Markdown from PDFs
+/docs_markdown/
